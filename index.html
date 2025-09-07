@@ -1,311 +1,535 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>703</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Font Awesome Icons -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
-      integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
+    <title>Chatoyant Universe | 3D全息门户</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.7.1/dist/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #0a0a16;
+            color: #ffffff;
+            font-family: 'Exo 2', sans-serif;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        #three-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 0;
+            position: relative;
+        }
+        
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, #00c6ff, #0072ff, #00c6ff);
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: hologram 3s linear infinite;
+            text-shadow: 0 0 30px rgba(0, 198, 255, 0.5);
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+        
+        @keyframes hologram {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .portal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+        
+        .portal-card {
+            background: rgba(10, 15, 35, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(0, 198, 255, 0.3);
+            transform-style: preserve-3d;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .portal-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(0, 198, 255, 0.8);
+        }
+        
+        .portal-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 198, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+        
+        .portal-icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #00c6ff, #0072ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px rgba(0, 198, 255, 0.5));
+        }
+        
+        .portal-name {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #00c6ff;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+        }
+        
+        .portal-desc {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .portal-link {
+            background: linear-gradient(45deg, #00c6ff, #0072ff);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: inline-block;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+        }
+        
+        .portal-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 198, 255, 0.7);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 50px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        .cyber-globe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(0, 198, 255, 0.2), transparent 70%);
+            box-shadow: 0 0 100px rgba(0, 198, 255, 0.2);
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .portal-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .portal-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .logo {
+                font-size: 2.5rem;
+            }
+            
+            .tagline {
+                font-size: 1rem;
+            }
+        }
+        
+        /* 导航面板 */
+        .nav-panel {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(10, 15, 35, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            border-radius: 50px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+            border: 1px solid rgba(0, 198, 255, 0.3);
+        }
+        
+        .nav-btn {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Exo 2', sans-serif;
+        }
+        
+        .nav-btn:hover, .nav-btn.active {
+            background: linear-gradient(45deg, #00c6ff, #0072ff);
+            color: white;
+            box-shadow: 0 0 15px rgba(0, 198, 255, 0.5);
+        }
+        
+        /* 浮动粒子 */
+        .floating-particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: rgba(0, 198, 255, 0.7);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(0, 198, 255, 0.5);
+            z-index: 1;
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="navbar__container">
-            <h1 id="navbar__logo">703</h1>
-            <div class="navbar__toggle" id="mobile-menu">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
+    <div id="three-container"></div>
+    <div class="cyber-globe"></div>
+    
+    <div class="container">
+        <header>
+            <h1 class="logo">Chatoyant Universe</h1>
+            <p class="tagline">探索无限可能的数字世界</p>
+        </header>
+
+        <div class="portal-grid">
+            <div class="portal-card" data-category="store">
+                <div class="portal-icon">🛒</div>
+                <h3 class="portal-name">商店</h3>
+                <p class="portal-desc">进入购物体验，浏览独特的商品</p>
+                <a href="https://box.chatoyant.top/store.html" class="portal-link">进入商店</a>
+            </div>
+            
+            <div class="portal-card" data-category="class703">
+                <div class="portal-icon">🎓</div>
+                <h3 class="portal-name">703教室</h3>
+                <p class="portal-desc">学习资源与知识共享空间，探索技术的奥秘</p>
+                <a href="https://box.chatoyant.top/class703.html" class="portal-link">进入教室</a>
+            </div>
+            
+            <div class="portal-card" data-category="main">
+                <div class="portal-icon">🌌</div>
+                <h3 class="portal-name">主空间</h3>
+                <p class="portal-desc">Chatoyant核心区域</p>
+                <a href="https://www.chatoyant.top" class="portal-link">进入主空间</a>
+            </div>
+            
+            <div class="portal-card" data-category="blog">
+                <div class="portal-icon">📝</div>
+                <h3 class="portal-name">思维博客</h3>
+                <p class="portal-desc">分享想法、技术与创意，记录探索的旅程</p>
+                <a href="https://box.chatoyant.top/blog.html" class="portal-link">阅读博客</a>
+            </div>
+            
+            <div class="portal-card" data-category="ebook">
+                <div class="portal-icon">📚</div>
+                <h3 class="portal-name">ebook</h3>
+                <p class="portal-desc">703作品</p>
+                <a href="https://box.chatoyant.top/ebook.html" class="portal-link">浏览书库</a>
+            </div>
+            
+            <div class="portal-card" data-category="fun">
+                <div class="portal-icon">🎮</div>
+                <h3 class="portal-name">娱乐空间</h3>
+                <p class="portal-desc">放松身心的小游戏与趣味内容，享受休闲时光</p>
+                <a href="https://box.chatoyant.top/fun.html" class="portal-link">开始娱乐</a>
+            </div>
         </div>
-        <ul class="navbar__menu">
-            <li class="navbar__item">
-                <a href="#" class="navbar__links">Home</a>
-            </li>
-            <li class="navbar__item">
-                <a href="services.html" class="navbar__links">Services</a>
-            </li>
-            <li class="navbar__item">
-                <a href="pricing.html" class="navbar__links">Plan</a>
-            </li>
-            <li class="navbar__btn">
-                <a href="signup.html" class="button">Join us NOW!</a>
-            </li>
-        </ul>
+        
+        <footer>
+            <p>© 2025 Chatoyant Box | 探索未知，创造未来</p>
+        </footer>
+    </div>
+    
+    <div class="nav-panel">
+        <button class="nav-btn active" data-filter="all">全部</button>
+        <button class="nav-btn" data-filter="store">商店</button>
+        <button class="nav-btn" data-filter="class703">703教室</button>
+        <button class="nav-btn" data-filter="main">主空间</button>
+        <button class="nav-btn" data-filter="blog">博客</button>
+        <button class="nav-btn" data-filter="ebook">书库</button>
+        <button class="nav-btn" data-filter="fun">娱乐</button>
     </div>
 
-</nav>
+    <script>
+        // 初始化Three.js场景
+        function initThreeJS() {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.getElementById('three-container').appendChild(renderer.domElement);
 
-    <!-- Hero Section -->
-     <section class="hero">
-        <div class="hero__container">
-            <div class="hero__content">
-                <h1>现在给我加入703!</h1>
-                <p>加入享受50%的折扣!</p>
-                <button class="hero__btn"><a href="signup.html">加入</a></button>
-            </div>
-            <div class="hero__image">
-                <img id="hero__image" src="703.svg" alt="703">
-            </div>
-        </div>
-     </section>
+            // 创建粒子系统
+            const particlesGeometry = new THREE.BufferGeometry();
+            const particlesCount = 2000;
+            
+            const posArray = new Float32Array(particlesCount * 3);
+            const colorArray = new Float32Array(particlesCount * 3);
+            
+            for (let i = 0; i < particlesCount * 3; i++) {
+                posArray[i] = (Math.random() - 0.5) * 50;
+                colorArray[i] = Math.random();
+            }
+            
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
+            
+            const particlesMaterial = new THREE.PointsMaterial({
+                size: 0.1,
+                vertexColors: true,
+                blending: THREE.AdditiveBlending
+            });
+            
+            const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particlesMesh);
+            
+            // 添加光源
+            const ambientLight = new THREE.AmbientLight(0x333333);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0x00ccff, 0.5);
+            directionalLight.position.set(5, 3, 5);
+            scene.add(directionalLight);
+            
+            const directionalLight2 = new THREE.DirectionalLight(0xff00cc, 0.5);
+            directionalLight2.position.set(-5, -3, -5);
+            scene.add(directionalLight2);
+            
+            camera.position.z = 5;
 
-     <!-- Rotating fucking LOGO section -->
+            // 动画循环
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                particlesMesh.rotation.x += 0.0005;
+                particlesMesh.rotation.y += 0.001;
+                
+                renderer.render(scene, camera);
+            }
+            animate();
 
+            // 窗口大小调整
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
 
-     <div class="rotating-logos">
-        <div class="rotating-logos__track">
-            <span class="logo-text">棒(๑•̀ㅂ•́)و✧</span>
-            <span class="logo-text">可信任</span>
-            <span class="logo-text">新颖</span>
-            <span class="logo-text">流传广</span>
-            <span class="logo-text">完美</span>
-            <span class="logo-text">帅气作者</span>
-        </div>
-     </div>
+        // 创建浮动粒子效果
+        function createFloatingParticles() {
+            const particlesCount = 20;
+            
+            for (let i = 0; i < particlesCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('floating-particle');
+                
+                // 随机位置
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                particle.style.left = `${x}vw`;
+                particle.style.top = `${y}vh`;
+                
+                // 随机大小
+                const size = 2 + Math.random() * 4;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                document.body.appendChild(particle);
+                
+                // 动画
+                const duration = 20 + Math.random() * 30;
+                const xMovement = (Math.random() - 0.5) * 50;
+                const yMovement = (Math.random() - 0.5) * 30;
+                
+                gsap.to(particle, {
+                    x: `${xMovement}vw`,
+                    y: `${yMovement}vh`,
+                    duration: duration,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "sine.inOut"
+                });
+            }
+        }
 
+        // 导航过滤功能
+        function setupNavigation() {
+            const navButtons = document.querySelectorAll('.nav-btn');
+            const portalCards = document.querySelectorAll('.portal-card');
+            
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // 更新活动按钮
+                    navButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    const filter = button.getAttribute('data-filter');
+                    
+                    // 过滤卡片
+                    portalCards.forEach(card => {
+                        if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                            gsap.to(card, {
+                                opacity: 1,
+                                scale: 1,
+                                duration: 0.5,
+                                display: 'flex'
+                            });
+                        } else {
+                            gsap.to(card, {
+                                opacity: 0,
+                                scale: 0.8,
+                                duration: 0.5,
+                                display: 'none'
+                            });
+                        }
+                    });
+                });
+            });
+        }
 
-     <!-- Why koin us -->
-      <section class="why-choose-us">
-        <div class="container">
-            <h2>为什么加入703</h2>
-            <p class="intro-text">
-                发现我们的辉煌和低谷.....
-            </p>
-            <div class="features-grid">
-                <div class="feature-item">
-                    <i class="fa-solid fa-check icon"></i>
-                    <h3>学神聚集</h3>
-                    <p>保护您的学习</p>
-                </div>
-                <div class="feature-item">
-                    <i class="fa-solid fa-check icon"></i>
-                    <h3>有趣且好玩</h3>
-                    <p>快乐每一天</p>
-                </div>
-                <div class="feature-item">
-                    <i class="fa-solid fa-check icon"></i>
-                    <h3>有好的环境</h3>
-                    <p>open 性格</p>
-                </div>
-                <div class="feature-item">
-                    <i class="fa-solid fa-check icon"></i>
-                    <h3>玩梗大神</h3>
-                    <p>紧随时代潮流</p>
-                </div>
-            </div>
-        </div>
-      </section>
+        // 卡片悬停效果
+        function setupCardHover() {
+            const cards = document.querySelectorAll('.portal-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    gsap.to(card, {
+                        y: -10,
+                        duration: 0.3,
+                        boxShadow: '0 15px 30px rgba(0, 0, 0, 0.4)'
+                    });
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    gsap.to(card, {
+                        y: 0,
+                        duration: 0.3,
+                        boxShadow: '0 5px 15px rgba(0, 0, 0, 0.2)'
+                    });
+                });
+            });
+        }
 
-
-      <!-- Plan Section -->
-       <section class="services">
-        <h2>选择正确的计划!✔</h2>
-
-        <!-- Prices -->
-         <div class="pricing-toggle">
-            <div class="toggle-container">
-                <span class="toggle-option">月付</span>
-                <label class="switch">
-                    <input type="checkbox" id="pricing-toggle-checkbox" onclick="switchPricing()">
-                    <span class="slider"></span>
-                </label>
-                <span class="toggle-option">年付</span>
-            </div>
-            <div class="save-percentage-container">
-                <span class="save-percentage">节省20%</span>
-            </div>
-         </div>
-
-        <div class="services__container">
-            <!-- Basic Plan -->
-             <div class="services__card">
-                <div class="card-content">
-                    <h3>基础计划</h3>
-                    <div class="card-price">
-                        <p class="price monthly-price">19.99/月</p>
-                        <p class="price yearly-price hidden">13.99/月</p>
-                        <a href="signup.html" class="price-btn">现在加入</a>
-                        <p id="small-desc">加入Class 703 NOW!</p>
-                    </div>
-                    <div class="card-features">
-                        <p>特点!</p>
-                        <ul>
-                            <li>电子结算</li>
-                            <li>访问我们的库</li>
-                        </ul>
-                    </div>
-                </div>
-        </div>
-             <div class="services__card">
-                <div class="card-content">
-                    <h3>PRO计划</h3>
-                    <div class="card-price">
-                        <p class="price monthly-price">19.99/月</p>
-                        <p class="price yearly-price hidden">13.99/月</p>
-                        <a href="signup.html" class="price-btn">现在加入</a>
-                        <p id="small-desc">加入Class 703 NOW!</p>
-                    </div>
-                    <div class="card-features">
-                        <p>特点!</p>
-                        <ul>
-                            <li>电子结算</li>
-                            <li>访问我们的库</li>
-                            <li>获得最新消息</li>
-                            <li>游戏享受15%折扣</li>
-                        </ul>
-                    </div>
-                </div>
-        </div>
-             <div class="services__card">
-                <div class="card-content">
-                    <h3>基础计划</h3>
-                    <div class="card-price">
-                        <p class="price monthly-price">19.99/月</p>
-                        <p class="price yearly-price hidden">13.99/月</p>
-                        <a href="signup.html" class="price-btn">现在加入</a>
-                        <p id="small-desc">加入Class 703 NOW!</p>
-                    </div>
-                    <div class="card-features">
-                        <p>特点!</p>
-                        <ul>
-                            <li>电子结算</li>
-                            <li>访问我们的库</li>
-                            <li>获得最新消息</li>
-                            <li>游戏享受20%折扣</li>
-                            <li>原神“加速包”</li>
-                        </ul>
-                    </div>
-                </div>
-        </div>
-
-       </section>
-
-       <!-- Footer -->
-       <div class="footer__container">
-        <div class="footer__links">
-          <div class="footer__link--wrapper">
-            <div class="footer__link--items">
-              <h2>关于703</h2>
-              <a href="supporters.html">支持者</a> <a href="peacewall.html">感谢墙</a>
-            </div>
-            <div class="footer__link--items">
-              <h2>社交媒体</h2>
-              <a href="/">Instagram</a> <a href="/">Facebook</a>
-              <a href="/">Youtube</a> <a href="/">Twitter</a>
-            </div>
-          </div>
-        </div>
-        <section class="social__media">
-          <div class="social__media--wrap">
-            <div class="footer__logo">
-              <a href="/" id="footer__logo">703</a>
-            </div>
-            <p class="website__rights">© 703 <span class="year"></span>侵权必究</p>
-            <div class="social__icons">
-              <a href="/" class="social__icon--link" target="_blank"
-                ><i class="fab fa-facebook"></i
-              ></a>
-              <a href="/" class="social__icon--link"
-                ><i class="fab fa-instagram"></i
-              ></a>
-              <a href="/" class="social__icon--link"
-                ><i class="fab fa-youtube"></i
-              ></a>
-              <a href="/" class="social__icon--link"
-                ><i class="fab fa-linkedin"></i
-              ></a>
-              <a href="/" class="social__icon--link"
-                ><i class="fab fa-twitter"></i
-              ></a>
-            </div>
-          </div>
-        </section>
-      </div>
-            <div class="wrapper">
-                <p>703のFAQs</p>
-                <h1>经常(?)问的问题</h1>
-          
-                <div class="faq">
-                  <button class="accordion">
-                    什么是703?
-                    <i class="fa-solid fa-chevron-down"></i>
-                  </button>
-                  <div class="pannel">
-                    <p>
-                        703是一个学神超级多的班级,凝聚力强,你梦想的班级!
-                    </p>
-                  </div>
-                </div>
-          
-                <div class="faq">
-                  <button class="accordion">
-                    为什么加入703
-                    <i class="fa-solid fa-chevron-down"></i>
-                  </button>
-                  <div class="pannel">
-                    <p>
-                        因为703稳稳年纪第一,加入Class 703 享受你梦寐以求的待遇!
-                    </p>
-                  </div>
-                </div>
-          
-                <div class="faq">
-                  <button class="accordion">
-                    703有八卦吗?
-                    <i class="fa-solid fa-chevron-down"></i>
-                  </button>
-                  <div class="pannel">
-                    <p>
-                        YES!703有张皓轩这个GAY,帅气的网页制作者等等
-                    </p>
-                  </div>
-                </div>
-                <div class="faq">
-                  <button class="accordion">
-                    703的学神列表?
-                    <i class="fa-solid fa-chevron-down"></i>
-                  </button>
-                  <div class="pannel">
-                    <p>
-                        1st:吴雨晨
-                        2nd:PPS
-                        3nd:...
-                        4th:...
-                        5th:...
-                        ⬆️自己找我填！！！！
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <script>
-                var acc = document.getElementsByClassName("accordion");
-var i;
-
-for (i = 0; i < acc.length; i++) {
-  acc[i].addEventListener("click", function () {
-    this.classList.toggle("active");
-    this.parentElement.classList.toggle("active");
-
-    var pannel = this.nextElementSibling;
-
-    if (pannel.style.display === "block") {
-      pannel.style.display = "none";
-    } else {
-      pannel.style.display = "block";
-    }
-  });
-}
-              </script>
-
-
-
-    <script src="script.js"></script>
+        // 页面加载初始化
+        window.addEventListener('load', () => {
+            initThreeJS();
+            createFloatingParticles();
+            setupNavigation();
+            setupCardHover();
+            
+            // 初始动画
+            gsap.from('.logo', {
+                opacity: 0,
+                y: -30,
+                duration: 1.5,
+                ease: "power3.out"
+            });
+            
+            gsap.from('.tagline', {
+                opacity: 0,
+                delay: 0.5,
+                duration: 1,
+                ease: "power2.out"
+            });
+            
+            gsap.from('.portal-card', {
+                opacity: 0,
+                y: 50,
+                stagger: 0.1,
+                duration: 1,
+                delay: 0.8,
+                ease: "back.out(1.7)"
+            });
+            
+            gsap.from('.nav-btn', {
+                opacity: 0,
+                y: 20,
+                stagger: 0.1,
+                duration: 0.8,
+                delay: 1.5,
+                ease: "power2.out"
+            });
+        });
+    </script>
 </body>
 </html>
