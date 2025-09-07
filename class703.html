@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>703</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+      integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar__container">
+            <h1 id="navbar__logo">703</h1>
+            <div class="navbar__toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+        </div>
+        <ul class="navbar__menu">
+            <li class="navbar__item">
+                <a href="#" class="navbar__links">Home</a>
+            </li>
+            <li class="navbar__item">
+                <a href="services.html" class="navbar__links">Services</a>
+            </li>
+            <li class="navbar__item">
+                <a href="pricing.html" class="navbar__links">Plan</a>
+            </li>
+            <li class="navbar__btn">
+                <a href="signup.html" class="button">Join us NOW!</a>
+            </li>
+        </ul>
+    </div>
+
+</nav>
+
+    <!-- Hero Section -->
+     <section class="hero">
+        <div class="hero__container">
+            <div class="hero__content">
+                <h1>现在给我加入703!</h1>
+                <p>加入享受50%的折扣!</p>
+                <button class="hero__btn"><a href="signup.html">加入</a></button>
+            </div>
+            <div class="hero__image">
+                <img id="hero__image" src="703.svg" alt="703">
+            </div>
+        </div>
+     </section>
+
+     <!-- Rotating fucking LOGO section -->
+
+
+     <div class="rotating-logos">
+        <div class="rotating-logos__track">
+            <span class="logo-text">棒(๑•̀ㅂ•́)و✧</span>
+            <span class="logo-text">可信任</span>
+            <span class="logo-text">新颖</span>
+            <span class="logo-text">流传广</span>
+            <span class="logo-text">完美</span>
+            <span class="logo-text">帅气作者</span>
+        </div>
+     </div>
+
+
+     <!-- Why koin us -->
+      <section class="why-choose-us">
+        <div class="container">
+            <h2>为什么加入703</h2>
+            <p class="intro-text">
+                发现我们的辉煌和低谷.....
+            </p>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <i class="fa-solid fa-check icon"></i>
+                    <h3>学神聚集</h3>
+                    <p>保护您的学习</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fa-solid fa-check icon"></i>
+                    <h3>有趣且好玩</h3>
+                    <p>快乐每一天</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fa-solid fa-check icon"></i>
+                    <h3>有好的环境</h3>
+                    <p>open 性格</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fa-solid fa-check icon"></i>
+                    <h3>玩梗大神</h3>
+                    <p>紧随时代潮流</p>
+                </div>
+            </div>
+        </div>
+      </section>
+
+
+      <!-- Plan Section -->
+       <section class="services">
+        <h2>选择正确的计划!✔</h2>
+
+        <!-- Prices -->
+         <div class="pricing-toggle">
+            <div class="toggle-container">
+                <span class="toggle-option">月付</span>
+                <label class="switch">
+                    <input type="checkbox" id="pricing-toggle-checkbox" onclick="switchPricing()">
+                    <span class="slider"></span>
+                </label>
+                <span class="toggle-option">年付</span>
+            </div>
+            <div class="save-percentage-container">
+                <span class="save-percentage">节省20%</span>
+            </div>
+         </div>
+
+        <div class="services__container">
+            <!-- Basic Plan -->
+             <div class="services__card">
+                <div class="card-content">
+                    <h3>基础计划</h3>
+                    <div class="card-price">
+                        <p class="price monthly-price">19.99/月</p>
+                        <p class="price yearly-price hidden">13.99/月</p>
+                        <a href="signup.html" class="price-btn">现在加入</a>
+                        <p id="small-desc">加入Class 703 NOW!</p>
+                    </div>
+                    <div class="card-features">
+                        <p>特点!</p>
+                        <ul>
+                            <li>电子结算</li>
+                            <li>访问我们的库</li>
+                        </ul>
+                    </div>
+                </div>
+        </div>
+             <div class="services__card">
+                <div class="card-content">
+                    <h3>PRO计划</h3>
+                    <div class="card-price">
+                        <p class="price monthly-price">19.99/月</p>
+                        <p class="price yearly-price hidden">13.99/月</p>
+                        <a href="signup.html" class="price-btn">现在加入</a>
+                        <p id="small-desc">加入Class 703 NOW!</p>
+                    </div>
+                    <div class="card-features">
+                        <p>特点!</p>
+                        <ul>
+                            <li>电子结算</li>
+                            <li>访问我们的库</li>
+                            <li>获得最新消息</li>
+                            <li>游戏享受15%折扣</li>
+                        </ul>
+                    </div>
+                </div>
+        </div>
+             <div class="services__card">
+                <div class="card-content">
+                    <h3>基础计划</h3>
+                    <div class="card-price">
+                        <p class="price monthly-price">19.99/月</p>
+                        <p class="price yearly-price hidden">13.99/月</p>
+                        <a href="signup.html" class="price-btn">现在加入</a>
+                        <p id="small-desc">加入Class 703 NOW!</p>
+                    </div>
+                    <div class="card-features">
+                        <p>特点!</p>
+                        <ul>
+                            <li>电子结算</li>
+                            <li>访问我们的库</li>
+                            <li>获得最新消息</li>
+                            <li>游戏享受20%折扣</li>
+                            <li>原神“加速包”</li>
+                        </ul>
+                    </div>
+                </div>
+        </div>
+
+       </section>
+
+       <!-- Footer -->
+       <div class="footer__container">
+        <div class="footer__links">
+          <div class="footer__link--wrapper">
+            <div class="footer__link--items">
+              <h2>关于703</h2>
+              <a href="supporters.html">支持者</a> <a href="peacewall.html">感谢墙</a>
+            </div>
+            <div class="footer__link--items">
+              <h2>社交媒体</h2>
+              <a href="/">Instagram</a> <a href="/">Facebook</a>
+              <a href="/">Youtube</a> <a href="/">Twitter</a>
+            </div>
+          </div>
+        </div>
+        <section class="social__media">
+          <div class="social__media--wrap">
+            <div class="footer__logo">
+              <a href="/" id="footer__logo">703</a>
+            </div>
+            <p class="website__rights">© 703 <span class="year"></span>侵权必究</p>
+            <div class="social__icons">
+              <a href="/" class="social__icon--link" target="_blank"
+                ><i class="fab fa-facebook"></i
+              ></a>
+              <a href="/" class="social__icon--link"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="/" class="social__icon--link"
+                ><i class="fab fa-youtube"></i
+              ></a>
+              <a href="/" class="social__icon--link"
+                ><i class="fab fa-linkedin"></i
+              ></a>
+              <a href="/" class="social__icon--link"
+                ><i class="fab fa-twitter"></i
+              ></a>
+            </div>
+          </div>
+        </section>
+      </div>
+            <div class="wrapper">
+                <p>703のFAQs</p>
+                <h1>经常(?)问的问题</h1>
+          
+                <div class="faq">
+                  <button class="accordion">
+                    什么是703?
+                    <i class="fa-solid fa-chevron-down"></i>
+                  </button>
+                  <div class="pannel">
+                    <p>
+                        703是一个学神超级多的班级,凝聚力强,你梦想的班级!
+                    </p>
+                  </div>
+                </div>
+          
+                <div class="faq">
+                  <button class="accordion">
+                    为什么加入703
+                    <i class="fa-solid fa-chevron-down"></i>
+                  </button>
+                  <div class="pannel">
+                    <p>
+                        因为703稳稳年纪第一,加入Class 703 享受你梦寐以求的待遇!
+                    </p>
+                  </div>
+                </div>
+          
+                <div class="faq">
+                  <button class="accordion">
+                    703有八卦吗?
+                    <i class="fa-solid fa-chevron-down"></i>
+                  </button>
+                  <div class="pannel">
+                    <p>
+                        YES!703有张皓轩这个GAY,帅气的网页制作者等等
+                    </p>
+                  </div>
+                </div>
+                <div class="faq">
+                  <button class="accordion">
+                    703的学神列表?
+                    <i class="fa-solid fa-chevron-down"></i>
+                  </button>
+                  <div class="pannel">
+                    <p>
+                        1st:吴雨晨
+                        2nd:PPS
+                        3nd:...
+                        4th:...
+                        5th:...
+                        ⬆️自己找我填！！！！
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <script>
+                var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function () {
+    this.classList.toggle("active");
+    this.parentElement.classList.toggle("active");
+
+    var pannel = this.nextElementSibling;
+
+    if (pannel.style.display === "block") {
+      pannel.style.display = "none";
+    } else {
+      pannel.style.display = "block";
+    }
+  });
+}
+              </script>
+
+
+
+    <script src="script.js"></script>
+</body>
+</html>
